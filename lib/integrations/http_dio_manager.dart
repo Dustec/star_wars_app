@@ -1,17 +1,24 @@
-import 'dart:_http';
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../core/domain/managers/http_manager.dart';
 
 class HttpDioManager implements HttpManager {
-  @override
-  Future<HttpResponse> delete(
-    String url, {
-    Map<String, dynamic>? queryParams,
-    Map<String, dynamic>? headers,
-  }) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  HttpDioManager() {
+    _dio = Dio();
+
+    if (!kReleaseMode) {
+      _dio.interceptors.add(
+        PrettyDioLogger(
+          requestHeader: true,
+          requestBody: true,
+        ),
+      );
+    }
   }
+
+  late Dio _dio;
 
   @override
   Future<HttpResponse> get(
@@ -19,8 +26,15 @@ class HttpDioManager implements HttpManager {
     Map<String, dynamic>? queryParams,
     Map<String, dynamic>? headers,
   }) {
-    // TODO: implement get
-    throw UnimplementedError();
+    return _solve(
+      () => _dio.get(
+        url,
+        queryParameters: queryParams,
+        options: Options(
+          headers: headers,
+        ),
+      ),
+    );
   }
 
   @override
@@ -30,8 +44,16 @@ class HttpDioManager implements HttpManager {
     Map<String, dynamic>? queryParams,
     Map<String, dynamic>? headers,
   }) {
-    // TODO: implement post
-    throw UnimplementedError();
+    return _solve(
+      () => _dio.post(
+        url,
+        data: requestBody,
+        queryParameters: queryParams,
+        options: Options(
+          headers: headers,
+        ),
+      ),
+    );
   }
 
   @override
@@ -41,7 +63,48 @@ class HttpDioManager implements HttpManager {
     Map<String, dynamic>? queryParams,
     Map<String, dynamic>? headers,
   }) {
-    // TODO: implement put
-    throw UnimplementedError();
+    return _solve(
+      () => _dio.put(
+        url,
+        data: requestBody,
+        queryParameters: queryParams,
+        options: Options(
+          headers: headers,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Future<HttpResponse> delete(
+    String url, {
+    Map<String, dynamic>? queryParams,
+    Map<String, dynamic>? headers,
+  }) {
+    return _solve(
+      () => _dio.delete(
+        url,
+        queryParameters: queryParams,
+        options: Options(
+          headers: headers,
+        ),
+      ),
+    );
+  }
+
+  Future<HttpResponse> _solve(
+    Future<Response<dynamic>> Function() jobRequest,
+  ) async {
+    final Future<Response> req = jobRequest();
+    try {
+      final Response response = await req;
+      return HttpResponse(
+        statusCode: response.statusCode ?? 0,
+        data: response.data,
+      );
+    } catch (error) {
+      print('HTTP DIO ERROR: ${error.toString()}');
+      throw Exception('HTTP DIO ERROR');
+    }
   }
 }
