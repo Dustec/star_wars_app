@@ -1,16 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:star_wars_app/core/presentation/resources/images.dart';
 
-class SplashPage extends StatelessWidget {
+import '../../../core/presentation/resources/images.dart';
+import '../../../core/presentation/widgets/base_scaffold.dart';
+import '../../../core/presentation/widgets/base_app_bar.dart';
+import '../../home/presentation/home_page.dart';
+
+class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
 
   @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) => _navigateToHome());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return BaseScaffold(
+      appBar: BaseAppBar(
         backgroundColor: Colors.transparent,
-        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       extendBodyBehindAppBar: true,
       body: Container(
@@ -23,9 +36,21 @@ class SplashPage extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: Image.asset(Images.starWarsLogo),
+          child: Hero(
+              tag: Images.starWarsLogo,
+              child: Image.asset(Images.starWarsLogo)),
         ),
       ),
     );
+  }
+
+  void _navigateToHome() {
+    Future<void>.delayed(const Duration(seconds: 4), () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute<void>(builder: (BuildContext context) {
+          return const HomePage();
+        }),
+      );
+    });
   }
 }
