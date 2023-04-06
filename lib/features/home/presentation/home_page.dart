@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:star_wars_app/features/people/list/presentation/pages/people_list_provider.dart';
 
 import '../../../core/presentation/resources/images.dart';
 import '../../../core/presentation/widgets/base_app_bar.dart';
@@ -21,9 +22,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
-      body: const Center(
-        child: Text('HOME'),
-      ),
+      body: const PeopleListProvider(),
     );
   }
 }
