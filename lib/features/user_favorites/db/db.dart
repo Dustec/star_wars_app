@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:star_wars_app/features/user_favorites/db/constants/db_constants.dart';
 
 import 'adapters/user_favs_db.dart';
 

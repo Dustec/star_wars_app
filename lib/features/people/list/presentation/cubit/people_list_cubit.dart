@@ -53,7 +53,7 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
           page: state.paginationCursor,
         )
         .flatMap((PaginatedStarWarsCharacters pagination) async* {
-          yield PaginatedStarWarsFavCharactersDto(
+          yield PaginatedStarWarsFavCharacters(
             next: pagination.next,
             characters: _buildFavorites(
               characters: pagination.characters,
@@ -62,7 +62,7 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
           );
         })
         .listen(
-          (PaginatedStarWarsFavCharactersDto pagination) => emit(
+          (PaginatedStarWarsFavCharacters pagination) => emit(
             state.copyWith(
               paginationCursor: pagination.next,
               peopleList: [
@@ -141,15 +141,6 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
           isFavorite: favsList.any((element) => element == character.url));
     }).toList();
   }
-}
-
-class PaginatedStarWarsFavCharactersDto {
-  const PaginatedStarWarsFavCharactersDto({
-    required this.next,
-    required this.characters,
-  });
-  final String next;
-  final List<StarWarsFavCharacter> characters;
 }
 
 @freezed

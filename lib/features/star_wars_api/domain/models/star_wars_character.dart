@@ -8,6 +8,16 @@ class PaginatedStarWarsCharacters {
   final List<StarWarsCharacter> characters;
 }
 
+class PaginatedStarWarsFavCharacters {
+  const PaginatedStarWarsFavCharacters({
+    required this.next,
+    required this.characters,
+  });
+
+  final String next;
+  final List<StarWarsFavCharacter> characters;
+}
+
 class StarWarsFavCharacter extends StarWarsCharacter {
   StarWarsFavCharacter({
     required String name,
