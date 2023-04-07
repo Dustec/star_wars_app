@@ -24,6 +24,7 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
   final StarWarsRepository _starWarsRepo;
 
   late Box<UserFav> _dbBox;
+  final List<String> _favsList = List.empty(growable: true);
 
   @override
   Future<void> close() {
@@ -35,10 +36,10 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
     _dbBox = Db.instance.getDb<UserFav>(DbBoxes.userFavs);
     final List<String> savedFavs =
         _dbBox.values.map((e) => e.url ?? '').toList();
+    _favsList.addAll(savedFavs);
 
     emit(state.copyWith(
       isLoading: true,
-      favsList: savedFavs,
     ));
     getPeople();
   }
@@ -53,7 +54,7 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
             next: pagination.next,
             characters: _buildFavorites(
               characters: pagination.characters,
-              favsList: state.favsList,
+              favsList: [..._favsList],
             ),
           );
         })
@@ -84,28 +85,25 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
   }
 
   void onAddFavorite(String url) {
-    final List<String> _favs = List.from(state.favsList);
-    _dbBox.put(_favs.length + 1, UserFav(url: url));
-    _favs.add(url);
+    _dbBox.put(url, UserFav(url: url));
+    _favsList.add(url);
+
     emit(state.copyWith(
-        favsList: _favs,
         peopleList: _buildFavorites(
-          characters: state.peopleList,
-          favsList: _favs,
-        )));
+      characters: state.peopleList,
+      favsList: [..._favsList],
+    )));
   }
 
   void onRemoveFavorite(String url) {
-    final List<String> _favs = List.from(state.favsList);
-    _dbBox.deleteAt(_favs.indexWhere((element) => element == url));
-    _favs.remove(url);
+    _dbBox.delete(url);
+    _favsList.remove(url);
 
     emit(state.copyWith(
-        favsList: _favs,
         peopleList: _buildFavorites(
-          characters: state.peopleList,
-          favsList: _favs,
-        )));
+      characters: state.peopleList,
+      favsList: [..._favsList],
+    )));
   }
 
   List<StarWarsFavCharacter> _buildFavorites({
@@ -138,7 +136,6 @@ class PeopleListState with _$PeopleListState {
     @Default(false) bool isLoading,
     @Default(false) bool isBottomLoading,
     @Default(<StarWarsFavCharacter>[]) List<StarWarsFavCharacter> peopleList,
-    @Default(<String>[]) List<String> favsList,
     String? paginationCursor,
   }) = _PeopleListState;
 }
