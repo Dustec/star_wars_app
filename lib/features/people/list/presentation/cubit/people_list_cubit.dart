@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:star_wars_app/core/domain/extensions/stream_extensions.dart';
-import 'package:star_wars_app/core/presentation/mixins/disposable_cubit.dart';
 
+import '../../../../../core/domain/extensions/stream_extensions.dart';
+import '../../../../../core/presentation/mixins/disposable_cubit.dart';
 import '../../../../star_wars_api/domain/models/star_wars_character.dart';
 import '../../../../star_wars_api/domain/star_wars_repository.dart';
 
