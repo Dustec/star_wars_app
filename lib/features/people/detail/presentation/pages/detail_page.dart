@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:star_wars_app/features/star_wars_api/domain/models/star_wars_character.dart';
 
 import '../../../../../core/presentation/resources/images.dart';
 import '../../../../../core/presentation/widgets/star_wars_fav_icon.dart';
 import '../../../../../core/presentation/widgets/texts/title_text.dart';
-
+import '../../../../star_wars_api/domain/models/star_wars_character.dart';
 import '../cubit/detail_cubit.dart';
 import '../widgets/planet_card.dart';
 
@@ -32,7 +31,6 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final DetailCubit cubit = context.read();
     return WillPopScope(
       onWillPop: () async {
         final item = StarWarsFavCharacter(
