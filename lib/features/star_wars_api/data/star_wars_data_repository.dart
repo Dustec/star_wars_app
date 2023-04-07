@@ -15,11 +15,13 @@ class StarWarsDataRepository with StarWarsApi implements StarWarsRepository {
       getPeopleMapper;
 
   @override
-  Stream<PaginatedStarWarsCharacters> getPeople() async* {
+  Stream<PaginatedStarWarsCharacters> getPeople({
+    String? page,
+  }) async* {
     yield* http
-        .get(
-          endpointParse('people/'),
-        )
+        .get(endpointParse('people/'), queryParams: {
+          'page': page,
+        })
         .handle(
           mapper: (dynamic json) => StarWarsGetPeopleResponseDto.fromJson(json),
         )

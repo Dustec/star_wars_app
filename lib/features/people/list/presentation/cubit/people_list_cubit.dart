@@ -19,11 +19,18 @@ class PeopleListCubit extends Cubit<PeopleListState> {
   void getPeople() {
     emit(state.copyWith(isLoading: true));
 
-    _starWarsRepo.getPeople().listen(
+    _starWarsRepo
+        .getPeople(
+          page: state.paginationCursor,
+        )
+        .listen(
           (PaginatedStarWarsCharacters pagination) => emit(
             state.copyWith(
               paginationCursor: pagination.next,
-              peopleList: pagination.characters,
+              peopleList: [
+                ...state.peopleList,
+                ...pagination.characters,
+              ],
             ),
           ),
           onError: (error) => print('onError: $error'),
