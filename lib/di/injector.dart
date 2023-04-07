@@ -8,6 +8,5 @@ final GetIt injector = GetIt.asNewInstance();
 
 void registerDependencies() {
   injector.registerFactory<HttpManager>(() => HttpDioManager());
-
   injector.registerFactory<StarWarsRepository>(() => StarWarsDataRepository());
 }
