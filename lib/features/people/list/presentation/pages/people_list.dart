@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:star_wars_app/core/presentation/widgets/list_view_infinite_scroll.dart';
 
 import '../cubit/people_list_cubit.dart';
 import '../widgets/people_card.dart';
@@ -9,6 +10,7 @@ class PeopleList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final PeopleListCubit cubit = context.read();
     return BlocBuilder<PeopleListCubit, PeopleListState>(
         builder: (BuildContext context, PeopleListState state) {
       if (state.isLoading) {
@@ -17,8 +19,9 @@ class PeopleList extends StatelessWidget {
         );
       }
 
-      return ListView.builder(
-        padding: const EdgeInsets.symmetric(vertical: 2),
+      return ListViewInfiniteScroll(
+        fetchMoreData: cubit.fetchMoreData,
+        showBottomLoader: state.isBottomLoading,
         itemCount: state.peopleList.length,
         itemBuilder: (BuildContext context, int index) {
           return PeopleTile(
