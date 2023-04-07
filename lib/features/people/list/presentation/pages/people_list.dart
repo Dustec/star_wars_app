@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:star_wars_app/core/presentation/widgets/list_view_infinite_scroll.dart';
+import 'package:star_wars_app/features/star_wars_api/domain/models/star_wars_character.dart';
 
 import '../cubit/people_list_cubit.dart';
 import '../widgets/people_card.dart';
@@ -24,10 +25,12 @@ class PeopleList extends StatelessWidget {
         showBottomLoader: state.isBottomLoading,
         itemCount: state.peopleList.length,
         itemBuilder: (BuildContext context, int index) {
+          final StarWarsFavCharacter item = state.peopleList[index];
           return PeopleTile(
             onTap: () {},
-            isFavorite: false,
-            item: state.peopleList[index],
+            isFavorite: item.isFavorite,
+            item: item,
+            onFavoriteTap: cubit.onFavoriteTap,
           );
         },
       );
