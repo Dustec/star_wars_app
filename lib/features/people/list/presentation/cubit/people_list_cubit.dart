@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:star_wars_app/features/star_wars_api/domain/models/star_wars_charater.dart';
 import 'package:star_wars_app/features/star_wars_api/domain/star_wars_repository.dart';
 
 part 'people_list_cubit.freezed.dart';
@@ -18,7 +19,7 @@ class PeopleListCubit extends Cubit<PeopleListState> {
     emit(state.copyWith(isLoading: true));
 
     _starWarsRepo.getPeople().listen(
-          (event) => print('onSucess'),
+          (people) => emit(state.copyWith(peopleList: people)),
           onError: (error) => print('onError: $error'),
           onDone: () => emit(
             state.copyWith(isLoading: false),
@@ -31,5 +32,6 @@ class PeopleListCubit extends Cubit<PeopleListState> {
 class PeopleListState with _$PeopleListState {
   factory PeopleListState({
     @Default(false) bool isLoading,
+    @Default(<StarWarsCharacter>[]) List<StarWarsCharacter> peopleList,
   }) = _PeopleListState;
 }
