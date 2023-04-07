@@ -1,35 +1,26 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hive/hive.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:star_wars_app/features/people/list/presentation/cubit/people_list_router.dart';
-
-import '../../../../user_favorites/db/adapters/user_favs_db.dart';
-import '../../../../user_favorites/db/constants/db_constants.dart';
-import '../../../../user_favorites/db/db.dart';
 
 import '../../../../../core/domain/extensions/stream_extensions.dart';
 import '../../../../../core/presentation/mixins/disposable_cubit.dart';
 import '../../../../star_wars_api/domain/models/star_wars_character.dart';
-import '../../../../star_wars_api/domain/star_wars_repository.dart';
+import '../../../../star_wars_api/domain/star_wars_favorites_usecases.dart';
+import 'people_list_router.dart';
 
 part 'people_list_cubit.freezed.dart';
 
 class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
   PeopleListCubit({
-    required StarWarsRepository starWarsRepo,
+    required StarWarsFavoritesUseCases starWarsFavs,
     required PeopleListRouter router,
-  })  : _starWarsRepo = starWarsRepo,
+  })  : _starWarsFavs = starWarsFavs,
         _router = router,
         super(PeopleListState()) {
     _init();
   }
 
-  final StarWarsRepository _starWarsRepo;
+  final StarWarsFavoritesUseCases _starWarsFavs;
   final PeopleListRouter _router;
-
-  late Box<UserFav> _dbBox;
-  final List<String> _favsList = List.empty(growable: true);
 
   @override
   Future<void> close() {
@@ -38,29 +29,15 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
   }
 
   void _init() {
-    _dbBox = Db.instance.getDb<UserFav>(DbBoxes.userFavs);
-    final List<String> savedFavs =
-        _dbBox.values.map((e) => e.url ?? '').toList();
-    _favsList.addAll(savedFavs);
-
     emit(state.copyWith(isLoading: true));
     getPeople();
   }
 
   void getPeople() {
-    _starWarsRepo
+    _starWarsFavs
         .getPeople(
           page: state.paginationCursor,
         )
-        .flatMap((PaginatedStarWarsCharacters pagination) async* {
-          yield PaginatedStarWarsFavCharacters(
-            next: pagination.next,
-            characters: _buildFavorites(
-              characters: pagination.characters,
-              favsList: [..._favsList],
-            ),
-          );
-        })
         .listen(
           (PaginatedStarWarsFavCharacters pagination) => emit(
             state.copyWith(
@@ -93,7 +70,7 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
         return;
       }
       final String url = result.url;
-      final bool isInFavsList = _favsList.any((element) => element == url);
+      final bool isInFavsList = _starWarsFavs.isInFavList(url);
 
       if (isInFavsList && !result.isFavorite) {
         onRemoveFavorite(url);
@@ -107,39 +84,21 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
   }
 
   void onAddFavorite(String url) {
-    _dbBox.put(url, UserFav(url: url));
-    _favsList.add(url);
+    _starWarsFavs.saveFavorite(url);
 
     emit(state.copyWith(
-        peopleList: _buildFavorites(
+        peopleList: _starWarsFavs.getFavoritePeople(
       characters: state.peopleList,
-      favsList: [..._favsList],
     )));
   }
 
   void onRemoveFavorite(String url) {
-    _dbBox.delete(url);
-    _favsList.remove(url);
+    _starWarsFavs.removeFavorite(url);
 
     emit(state.copyWith(
-        peopleList: _buildFavorites(
+        peopleList: _starWarsFavs.getFavoritePeople(
       characters: state.peopleList,
-      favsList: [..._favsList],
     )));
-  }
-
-  List<StarWarsFavCharacter> _buildFavorites({
-    required List<StarWarsCharacter> characters,
-    required List<String> favsList,
-  }) {
-    return characters.map((StarWarsCharacter character) {
-      return StarWarsFavCharacter(
-          name: character.name,
-          url: character.url,
-          homeWorld: character.homeWorld,
-          birthYear: character.birthYear,
-          isFavorite: favsList.any((element) => element == character.url));
-    }).toList();
   }
 }
 

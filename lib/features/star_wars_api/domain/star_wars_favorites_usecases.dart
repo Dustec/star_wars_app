@@ -13,6 +13,7 @@ abstract class StarWarsFavoritesUseCases {
   Stream<PaginatedStarWarsFavCharacters> getPeople({
     String? page,
   });
+  bool isInFavList(String url);
 }
 
 class StarWarsFavoritesUseCasesImp implements StarWarsFavoritesUseCases {
@@ -64,5 +65,10 @@ class StarWarsFavoritesUseCasesImp implements StarWarsFavoritesUseCases {
               .getFavorites()
               .any((element) => element == character.url));
     }).toList();
+  }
+
+  @override
+  bool isInFavList(String url) {
+    return _favDbSource.getFavorites().any((element) => element == url);
   }
 }
