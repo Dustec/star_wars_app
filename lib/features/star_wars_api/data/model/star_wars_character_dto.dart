@@ -5,10 +5,10 @@ part 'star_wars_character_dto.g.dart';
 @JsonSerializable()
 class StarWarsCharacterDto {
   const StarWarsCharacterDto({
-    required this.name,
-    required this.url,
-    required this.homeworld,
-    required this.birthYear,
+    this.name,
+    this.url,
+    this.homeworld,
+    this.birthYear,
   });
 
   factory StarWarsCharacterDto.fromJson(Map<String, dynamic> json) =>
