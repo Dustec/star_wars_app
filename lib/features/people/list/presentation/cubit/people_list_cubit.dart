@@ -2,9 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:star_wars_app/features/user_favorites/db/adapters/user_favs_db.dart';
-import 'package:star_wars_app/features/user_favorites/db/constants/db_constants.dart';
-import 'package:star_wars_app/features/user_favorites/db/db.dart';
+
+import '../../../../user_favorites/db/adapters/user_favs_db.dart';
+import '../../../../user_favorites/db/constants/db_constants.dart';
+import '../../../../user_favorites/db/db.dart';
 
 import '../../../../../core/domain/extensions/stream_extensions.dart';
 import '../../../../../core/presentation/mixins/disposable_cubit.dart';
@@ -38,9 +39,7 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
         _dbBox.values.map((e) => e.url ?? '').toList();
     _favsList.addAll(savedFavs);
 
-    emit(state.copyWith(
-      isLoading: true,
-    ));
+    emit(state.copyWith(isLoading: true));
     getPeople();
   }
 
