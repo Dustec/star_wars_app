@@ -11,20 +11,22 @@ class PeopleTile extends StatelessWidget {
     required this.item,
     this.onTap,
     required this.isFavorite,
-    this.onFavoriteTap,
+    this.onAddFavorite,
+    this.onRemoveFavorite,
   }) : super(key: key);
 
   final StarWarsCharacter item;
   final void Function()? onTap;
   final bool isFavorite;
-  final void Function()? onFavoriteTap;
+  final void Function()? onAddFavorite;
+  final void Function()? onRemoveFavorite;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
       leading: IconButton(
-        onPressed: onFavoriteTap,
+        onPressed: () => _onFavoriteTap(),
         iconSize: 50,
         icon: StarWarsFavIcon(
           isFavorite: isFavorite,
@@ -34,5 +36,13 @@ class PeopleTile extends StatelessWidget {
       subtitle: BodyText(item.birthYear),
       trailing: const Icon(Icons.chevron_right),
     );
+  }
+
+  void _onFavoriteTap() {
+    if (isFavorite) {
+      onRemoveFavorite?.call();
+      return;
+    }
+    onAddFavorite?.call();
   }
 }

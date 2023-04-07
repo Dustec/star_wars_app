@@ -18,16 +18,12 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
     required StarWarsRepository starWarsRepo,
   })  : _starWarsRepo = starWarsRepo,
         super(PeopleListState()) {
-    _dbBox = Db.instance.getDb<UserFav>(DbBoxes.userFavs);
-    _dbFavs = _dbBox.values.map((e) => e.url ?? '').toList();
-
-    emit(state.copyWith(isLoading: true));
-    getPeople();
+    _init();
   }
 
-  late Box<UserFav> _dbBox;
-  late List<String> _dbFavs;
   final StarWarsRepository _starWarsRepo;
+
+  late Box<UserFav> _dbBox;
 
   @override
   Future<void> close() {
@@ -35,12 +31,32 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
     return super.close();
   }
 
+  void _init() {
+    _dbBox = Db.instance.getDb<UserFav>(DbBoxes.userFavs);
+    final List<String> savedFavs =
+        _dbBox.values.map((e) => e.url ?? '').toList();
+
+    emit(state.copyWith(
+      isLoading: true,
+      favsList: savedFavs,
+    ));
+    getPeople();
+  }
+
   void getPeople() {
     _starWarsRepo
         .getPeople(
           page: state.paginationCursor,
         )
-        .flatMap(_buildFavorites)
+        .flatMap((PaginatedStarWarsCharacters pagination) async* {
+          yield PaginatedStarWarsFavCharactersDto(
+            next: pagination.next,
+            characters: _buildFavorites(
+              characters: pagination.characters,
+              favsList: state.favsList,
+            ),
+          );
+        })
         .listen(
           (PaginatedStarWarsFavCharactersDto pagination) => emit(
             state.copyWith(
@@ -67,21 +83,43 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
     getPeople();
   }
 
-  void onFavoriteTap() {}
+  void onAddFavorite(String url) {
+    final List<String> _favs = List.from(state.favsList);
+    _dbBox.put(_favs.length + 1, UserFav(url: url));
+    _favs.add(url);
+    emit(state.copyWith(
+        favsList: _favs,
+        peopleList: _buildFavorites(
+          characters: state.peopleList,
+          favsList: _favs,
+        )));
+  }
 
-  Stream<PaginatedStarWarsFavCharactersDto> _buildFavorites(
-      PaginatedStarWarsCharacters pagination) async* {
-    yield PaginatedStarWarsFavCharactersDto(
-      next: pagination.next,
-      characters: pagination.characters.map((StarWarsCharacter character) {
-        return StarWarsFavCharacter(
-            name: character.name,
-            url: character.url,
-            homeWorld: character.homeWorld,
-            birthYear: character.birthYear,
-            isFavorite: _dbFavs.any((element) => element == character.url));
-      }).toList(),
-    );
+  void onRemoveFavorite(String url) {
+    final List<String> _favs = List.from(state.favsList);
+    _dbBox.deleteAt(_favs.indexWhere((element) => element == url));
+    _favs.remove(url);
+
+    emit(state.copyWith(
+        favsList: _favs,
+        peopleList: _buildFavorites(
+          characters: state.peopleList,
+          favsList: _favs,
+        )));
+  }
+
+  List<StarWarsFavCharacter> _buildFavorites({
+    required List<StarWarsCharacter> characters,
+    required List<String> favsList,
+  }) {
+    return characters.map((StarWarsCharacter character) {
+      return StarWarsFavCharacter(
+          name: character.name,
+          url: character.url,
+          homeWorld: character.homeWorld,
+          birthYear: character.birthYear,
+          isFavorite: favsList.any((element) => element == character.url));
+    }).toList();
   }
 }
 
@@ -100,6 +138,7 @@ class PeopleListState with _$PeopleListState {
     @Default(false) bool isLoading,
     @Default(false) bool isBottomLoading,
     @Default(<StarWarsFavCharacter>[]) List<StarWarsFavCharacter> peopleList,
+    @Default(<String>[]) List<String> favsList,
     String? paginationCursor,
   }) = _PeopleListState;
 }

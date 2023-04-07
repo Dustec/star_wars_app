@@ -30,7 +30,8 @@ class PeopleList extends StatelessWidget {
             onTap: () {},
             isFavorite: item.isFavorite,
             item: item,
-            onFavoriteTap: cubit.onFavoriteTap,
+            onAddFavorite: () => cubit.onAddFavorite(item.url),
+            onRemoveFavorite: () => cubit.onRemoveFavorite(item.url),
           );
         },
       );
