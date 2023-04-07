@@ -1,13 +1,13 @@
 class StarWarsCharacter {
   const StarWarsCharacter({
     required this.name,
-    required this.urlImage,
+    required this.url,
     required this.homeWorld,
     required this.birthYear,
   });
 
   final String name;
-  final String urlImage;
+  final String url;
   final String homeWorld;
   final String birthYear;
 }

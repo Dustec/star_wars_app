@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:star_wars_app/features/people/list/presentation/widgets/people_card.dart';
 import '../cubit/people_list_cubit.dart';
 
 class PeopleList extends StatelessWidget {
@@ -18,10 +19,12 @@ class PeopleList extends StatelessWidget {
       }
 
       return ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 2),
         itemCount: state.peopleList.length,
         itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            title: Text(state.peopleList[index].name),
+          return PeopleTile(
+            onTap: () {},
+            item: state.peopleList[index],
           );
         },
       );

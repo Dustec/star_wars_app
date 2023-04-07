@@ -10,7 +10,7 @@ class StarWarsCharacterFromDtoMapper
   StarWarsCharacter map(StarWarsCharacterDto t) {
     return StarWarsCharacter(
       name: t.name ?? '',
-      urlImage: t.url ?? '',
+      url: t.url ?? '',
       homeWorld: t.homeworld ?? '',
       birthYear: t.birthYear ?? '',
     );
