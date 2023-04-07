@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:star_wars_app/core/presentation/resources/images.dart';
-import 'package:star_wars_app/core/presentation/widgets/star_wars_fav_icon.dart';
-import 'package:star_wars_app/core/presentation/widgets/texts/title_text.dart';
+
+import '../../../../../core/presentation/resources/images.dart';
+import '../../../../../core/presentation/widgets/star_wars_fav_icon.dart';
+import '../../../../../core/presentation/widgets/texts/title_text.dart';
 
 class DetailPage extends StatelessWidget {
   const DetailPage({
@@ -29,7 +30,7 @@ class DetailPage extends StatelessWidget {
             ),
           ),
         ),
-        title: TitleText(' $name'),
+        title: TitleText(name),
         centerTitle: false,
         actions: [
           StarWarsFavIcon(isFavorite: isFavorite),
