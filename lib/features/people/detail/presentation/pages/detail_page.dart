@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/presentation/resources/images.dart';
 import '../../../../../core/presentation/widgets/star_wars_fav_icon.dart';
 import '../../../../../core/presentation/widgets/texts/title_text.dart';
+
+import '../cubit/detail_cubit.dart';
+import '../widgets/planet_card.dart';
 
 class DetailPage extends StatelessWidget {
   const DetailPage({
@@ -36,9 +40,19 @@ class DetailPage extends StatelessWidget {
           StarWarsFavIcon(isFavorite: isFavorite),
         ],
       ),
-      body: Center(
-        child: TitleText('Detail: $name'),
-      ),
+      body: BlocBuilder<DetailCubit, DetailState>(
+          builder: (BuildContext context, DetailState state) {
+        if (state.isLoading || state.planet == null) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return SafeArea(
+          child: PlanetCard(
+            planet: state.planet!,
+          ),
+        );
+      }),
       floatingActionButton: Container(
         height: 50,
         width: 100,

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class TitleText extends Text {
-  const TitleText(String text, {Key? key})
-      : super(
+  const TitleText(
+    String text, {
+    Key? key,
+    TextAlign textAlign = TextAlign.start,
+  }) : super(
           text,
           key: key,
           style: const TextStyle(
@@ -10,5 +13,6 @@ class TitleText extends Text {
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
+          textAlign: textAlign,
         );
 }

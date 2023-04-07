@@ -19,6 +19,7 @@ class DetailProvider extends StatelessWidget {
     return BlocProvider(
       create: (context) => DetailCubit(
         starWarsRepo: injector.get(),
+        character: character,
       ),
       child: DetailPage(
         name: character.name,
