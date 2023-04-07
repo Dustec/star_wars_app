@@ -1,16 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:star_wars_app/core/presentation/widgets/texts/title_text.dart';
+import 'package:star_wars_app/features/people/list/presentation/cubit/people_list_cubit.dart';
 
 class PeopleList extends StatelessWidget {
   const PeopleList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          title: Text('textooooo'),
-        );
-      },
+    final PeopleListCubit cubit = context.read();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SizedBox(
+          height: 50,
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: cubit.getPeople,
+            child: const TitleText('TEST'),
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: Text('textooooo'),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
