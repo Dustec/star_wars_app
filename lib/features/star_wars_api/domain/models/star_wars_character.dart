@@ -8,6 +8,23 @@ class PaginatedStarWarsCharacters {
   final List<StarWarsCharacter> characters;
 }
 
+class StarWarsFavCharacter extends StarWarsCharacter {
+  StarWarsFavCharacter({
+    required String name,
+    required String url,
+    required String homeWorld,
+    required String birthYear,
+    required this.isFavorite,
+  }) : super(
+          name: name,
+          url: url,
+          homeWorld: homeWorld,
+          birthYear: birthYear,
+        );
+
+  final bool isFavorite;
+}
+
 class StarWarsCharacter {
   const StarWarsCharacter({
     required this.name,

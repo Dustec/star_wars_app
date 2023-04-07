@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:star_wars_app/features/user_favorites/db/adapters/user_favs_db.dart';
 import 'package:star_wars_app/features/user_favorites/db/constants/db_constants.dart';
 import 'package:star_wars_app/features/user_favorites/db/db.dart';
@@ -17,13 +18,15 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
     required StarWarsRepository starWarsRepo,
   })  : _starWarsRepo = starWarsRepo,
         super(PeopleListState()) {
-    _dbFavs = Db.instance.getDb<UserFav>(DbBoxes.userFavs);
+    _dbBox = Db.instance.getDb<UserFav>(DbBoxes.userFavs);
+    _dbFavs = _dbBox.values.map((e) => e.url ?? '').toList();
 
     emit(state.copyWith(isLoading: true));
     getPeople();
   }
 
-  late Box<UserFav> _dbFavs;
+  late Box<UserFav> _dbBox;
+  late List<String> _dbFavs;
   final StarWarsRepository _starWarsRepo;
 
   @override
@@ -37,8 +40,23 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
         .getPeople(
           page: state.paginationCursor,
         )
+        .flatMap((PaginatedStarWarsCharacters pagination) async* {
+          yield PaginatedStarWarsFavCharactersDto(
+            next: pagination.next,
+            characters:
+                pagination.characters.map((StarWarsCharacter character) {
+              return StarWarsFavCharacter(
+                  name: character.name,
+                  url: character.url,
+                  homeWorld: character.homeWorld,
+                  birthYear: character.birthYear,
+                  isFavorite:
+                      _dbFavs.any((element) => element == character.url));
+            }).toList(),
+          );
+        })
         .listen(
-          (PaginatedStarWarsCharacters pagination) => emit(
+          (PaginatedStarWarsFavCharactersDto pagination) => emit(
             state.copyWith(
               paginationCursor: pagination.next,
               peopleList: [
@@ -64,12 +82,21 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
   }
 }
 
+class PaginatedStarWarsFavCharactersDto {
+  const PaginatedStarWarsFavCharactersDto({
+    required this.next,
+    required this.characters,
+  });
+  final String next;
+  final List<StarWarsFavCharacter> characters;
+}
+
 @freezed
 class PeopleListState with _$PeopleListState {
   factory PeopleListState({
     @Default(false) bool isLoading,
     @Default(false) bool isBottomLoading,
-    @Default(<StarWarsCharacter>[]) List<StarWarsCharacter> peopleList,
+    @Default(<StarWarsFavCharacter>[]) List<StarWarsFavCharacter> peopleList,
     String? paginationCursor,
   }) = _PeopleListState;
 }
