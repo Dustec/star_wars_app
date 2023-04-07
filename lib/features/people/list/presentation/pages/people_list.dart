@@ -23,6 +23,7 @@ class PeopleList extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return PeopleTile(
             onTap: () {},
+            isFavorite: false,
             item: state.peopleList[index],
           );
         },
