@@ -1,5 +1,6 @@
-# star_wars_app
-Star Wars App
+# Star Wars App
+
+API: https://swapi.dev/documentation
 
 Execute next commands to run project:
 
