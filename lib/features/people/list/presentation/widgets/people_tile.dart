@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:star_wars_app/features/people/list/presentation/widgets/star_wars_fav_icon.dart';
+import 'package:star_wars_app/core/presentation/widgets/star_wars_fav_icon.dart';
 
 import '../../../../../core/presentation/widgets/texts/body_text.dart';
 import '../../../../../core/presentation/widgets/texts/title_text.dart';

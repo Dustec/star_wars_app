@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:star_wars_app/core/presentation/resources/images.dart';
+
+import '../resources/images.dart';
 
 class StarWarsFavIcon extends StatelessWidget {
   const StarWarsFavIcon({
@@ -12,6 +13,8 @@ class StarWarsFavIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 50,
+      height: 50,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
