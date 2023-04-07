@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/presentation/resources/images.dart';
-import '../../../core/presentation/widgets/base_scaffold.dart';
 import '../../../core/presentation/widgets/base_app_bar.dart';
 import '../../home/presentation/home_page.dart';
 
@@ -21,7 +20,7 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseScaffold(
+    return Scaffold(
       appBar: BaseAppBar(
         backgroundColor: Colors.transparent,
       ),

@@ -3,14 +3,13 @@ import 'package:star_wars_app/features/people/list/presentation/pages/people_lis
 
 import '../../../core/presentation/resources/images.dart';
 import '../../../core/presentation/widgets/base_app_bar.dart';
-import '../../../core/presentation/widgets/base_scaffold.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BaseScaffold(
+    return Scaffold(
       appBar: BaseAppBar(
         title: Hero(
           tag: Images.starWarsLogo,
