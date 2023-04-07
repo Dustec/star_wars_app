@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:star_wars_app/core/presentation/widgets/texts/body_text.dart';
-import 'package:star_wars_app/core/presentation/widgets/texts/title_text.dart';
 
+import '../../../../../core/presentation/widgets/texts/body_text.dart';
+import '../../../../../core/presentation/widgets/texts/title_text.dart';
 import '../../../../star_wars_api/domain/models/star_wars_character.dart';
 
 class PeopleTile extends StatelessWidget {
