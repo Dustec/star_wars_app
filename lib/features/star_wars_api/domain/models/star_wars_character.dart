@@ -1,3 +1,13 @@
+class PaginatedStarWarsCharacters {
+  const PaginatedStarWarsCharacters({
+    required this.next,
+    required this.characters,
+  });
+
+  final String next;
+  final List<StarWarsCharacter> characters;
+}
+
 class StarWarsCharacter {
   const StarWarsCharacter({
     required this.name,
