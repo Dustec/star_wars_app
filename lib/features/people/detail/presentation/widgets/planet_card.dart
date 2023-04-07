@@ -28,7 +28,7 @@ class PlanetCard extends StatelessWidget {
         child: Row(
           children: [
             BodyText(key),
-            BodyText(value.toUpperCase()),
+            Expanded(child: BodyText(value.toUpperCase())),
           ],
         ),
       ));
