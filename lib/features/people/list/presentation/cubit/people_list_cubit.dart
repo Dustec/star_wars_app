@@ -1,5 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hive/hive.dart';
+import 'package:star_wars_app/features/user_favorites/db/adapters/user_favs_db.dart';
+import 'package:star_wars_app/features/user_favorites/db/constants/db_constants.dart';
+import 'package:star_wars_app/features/user_favorites/db/db.dart';
 
 import '../../../../../core/domain/extensions/stream_extensions.dart';
 import '../../../../../core/presentation/mixins/disposable_cubit.dart';
@@ -13,10 +17,13 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
     required StarWarsRepository starWarsRepo,
   })  : _starWarsRepo = starWarsRepo,
         super(PeopleListState()) {
+    _dbFavs = Db.instance.getDb<UserFav>(DbBoxes.userFavs);
+
     emit(state.copyWith(isLoading: true));
     getPeople();
   }
 
+  late Box<UserFav> _dbFavs;
   final StarWarsRepository _starWarsRepo;
 
   @override

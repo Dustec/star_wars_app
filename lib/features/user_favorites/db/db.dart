@@ -22,8 +22,6 @@ class Db {
     Hive
       ..init(path)
       ..registerAdapter(UserFavAdapter());
-
-    await openDb(DbBoxes.userFavs);
     isInitialized = true;
   }
 
