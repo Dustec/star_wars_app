@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../core/presentation/widgets/list_view_infinite_scroll.dart';
-import '../../../detail/presentation/pages/detail_provider.dart';
-import '../../../../star_wars_api/domain/models/star_wars_character.dart';
 
+import '../../../../../core/presentation/widgets/list_view_infinite_scroll.dart';
+import '../../../../star_wars_api/domain/models/star_wars_character.dart';
 import '../cubit/people_list_cubit.dart';
 import '../widgets/people_tile.dart';
 

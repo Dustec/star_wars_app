@@ -13,17 +13,17 @@ class PlanetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, String> _props = {
+    final Map<String, String> props = {
       'Clima: ': planet.climate,
       'Tipo de terreno: ': planet.terrain,
       'Población: ': planet.population,
       'Diámetro: ': planet.diameter,
     };
 
-    List<Widget> _widgets = List.empty(growable: true);
+    List<Widget> widgets = List.empty(growable: true);
 
-    _props.forEach((key, value) {
-      _widgets.add(Padding(
+    props.forEach((key, value) {
+      widgets.add(Padding(
         padding: const EdgeInsets.symmetric(vertical: 6),
         child: Row(
           children: [
@@ -48,7 +48,7 @@ class PlanetCard extends StatelessWidget {
               planet.name,
               textAlign: TextAlign.center,
             ),
-            ..._widgets,
+            ...widgets,
           ],
         ),
       ),

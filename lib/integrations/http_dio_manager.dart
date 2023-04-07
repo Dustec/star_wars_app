@@ -103,7 +103,7 @@ class HttpDioManager implements HttpManager {
         data: response.data,
       );
     } catch (error) {
-      print('HTTP DIO ERROR: ${error.toString()}');
+      debugPrint('HTTP DIO ERROR: ${error.toString()}');
       throw Exception('HTTP DIO ERROR');
     }
   }

@@ -52,6 +52,7 @@ class StarWarsFavoritesUseCasesImp implements StarWarsFavoritesUseCases {
     _favDbSource.saveFavorite(url);
   }
 
+  @override
   List<StarWarsFavCharacter> getFavoritePeople({
     required List<StarWarsCharacter> characters,
   }) {

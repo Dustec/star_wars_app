@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 abstract class HttpManager {
   Future<HttpResponse> get(
     String url, {
@@ -47,7 +49,7 @@ extension HttpManagerEx on Future<HttpResponse> {
         throw Exception('${response.statusCode} ${response.data}');
       }
     } catch (error) {
-      print('HTTP ERROR: ${error.toString()}');
+      debugPrint('HTTP ERROR: ${error.toString()}');
     }
   }
 }
