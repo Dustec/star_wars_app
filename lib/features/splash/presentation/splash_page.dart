@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/presentation/resources/images.dart';
-import '../../../core/presentation/widgets/base_app_bar.dart';
 import '../../home/presentation/home_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -21,7 +20,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BaseAppBar(
+      appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
       extendBodyBehindAppBar: true,

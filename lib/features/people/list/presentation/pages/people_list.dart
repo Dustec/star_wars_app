@@ -10,27 +10,21 @@ class PeopleList extends StatelessWidget {
   Widget build(BuildContext context) {
     final PeopleListCubit cubit = context.read();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        SizedBox(
-          height: 50,
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: cubit.getPeople,
-            child: const TitleText('TEST'),
-          ),
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                title: Text('textooooo'),
-              );
-            },
-          ),
-        ),
-      ],
-    );
+    return BlocBuilder<PeopleListCubit, PeopleListState>(
+        builder: (BuildContext context, PeopleListState state) {
+      if (state.isLoading) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+
+      return ListView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            title: Text('textooooo'),
+          );
+        },
+      );
+    });
   }
 }

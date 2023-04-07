@@ -21,6 +21,7 @@ class StarWarsApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
       theme: ThemeData(
           colorScheme: const ColorScheme.dark(
+        primary: ColorPalette.accent,
         secondary: ColorPalette.accent,
       )),
       home: const SplashPage(),
