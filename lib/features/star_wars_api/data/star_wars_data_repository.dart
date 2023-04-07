@@ -1,6 +1,6 @@
 import '../../../core/domain/contracts/mapper.dart';
 import '../../../core/domain/managers/http_manager.dart';
-import '../domain/models/star_wars_charater.dart';
+import '../domain/models/star_wars_character.dart';
 import '../domain/star_wars_repository.dart';
 import '../remote/star_wars_api.dart';
 import 'mapper/star_wars_character_from_dto.dart';

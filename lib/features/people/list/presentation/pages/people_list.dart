@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:star_wars_app/core/presentation/widgets/texts/title_text.dart';
-import 'package:star_wars_app/features/people/list/presentation/cubit/people_list_cubit.dart';
-import 'package:star_wars_app/features/star_wars_api/domain/models/star_wars_charater.dart';
+import '../cubit/people_list_cubit.dart';
 
 class PeopleList extends StatelessWidget {
   const PeopleList({Key? key}) : super(key: key);

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:star_wars_app/di/injector.dart';
 
-import 'features/splash/presentation/splash_page.dart';
 import 'core/presentation/resources/color_palette.dart';
+import 'di/injector.dart';
+import 'features/splash/presentation/splash_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

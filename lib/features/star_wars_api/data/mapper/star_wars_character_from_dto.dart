@@ -1,6 +1,6 @@
-import 'package:star_wars_app/core/domain/contracts/mapper.dart';
-import 'package:star_wars_app/features/star_wars_api/data/model/star_wars_character_dto.dart';
-import 'package:star_wars_app/features/star_wars_api/domain/models/star_wars_charater.dart';
+import '../../../../core/domain/contracts/mapper.dart';
+import '../model/star_wars_character_dto.dart';
+import '../../domain/models/star_wars_character.dart';
 
 class StarWarsCharacterFromDtoMapper
     implements Mapper<StarWarsCharacterDto, StarWarsCharacter> {

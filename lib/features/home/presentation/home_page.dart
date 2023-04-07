@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:star_wars_app/features/people/list/presentation/pages/people_list_provider.dart';
 
 import '../../../core/presentation/resources/images.dart';
+import '../../people/list/presentation/pages/people_list_provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

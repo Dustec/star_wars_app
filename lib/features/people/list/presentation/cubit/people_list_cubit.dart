@@ -1,7 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:star_wars_app/features/star_wars_api/domain/models/star_wars_charater.dart';
-import 'package:star_wars_app/features/star_wars_api/domain/star_wars_repository.dart';
+
+import '../../../../star_wars_api/domain/models/star_wars_character.dart';
+import '../../../../star_wars_api/domain/star_wars_repository.dart';
 
 part 'people_list_cubit.freezed.dart';
 
