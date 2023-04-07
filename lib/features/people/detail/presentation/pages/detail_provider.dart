@@ -22,8 +22,7 @@ class DetailProvider extends StatelessWidget {
         character: character,
       ),
       child: DetailPage(
-        name: character.name,
-        isFavorite: character.isFavorite,
+        character: character,
       ),
     );
   }

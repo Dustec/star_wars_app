@@ -28,7 +28,7 @@ class PeopleList extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           final StarWarsFavCharacter item = state.peopleList[index];
           return PeopleTile(
-            onTap: () => _navigateToDetail(context, item),
+            onTap: () => cubit.navigateToDetail(item),
             isFavorite: item.isFavorite,
             item: item,
             onAddFavorite: () => cubit.onAddFavorite(item.url),
@@ -37,13 +37,5 @@ class PeopleList extends StatelessWidget {
         },
       );
     });
-  }
-
-  void _navigateToDetail(BuildContext context, StarWarsFavCharacter item) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (BuildContext context) {
-        return DetailProvider(character: item);
-      }),
-    );
   }
 }

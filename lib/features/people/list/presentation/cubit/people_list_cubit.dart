@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:star_wars_app/features/people/list/presentation/cubit/people_list_router.dart';
 
 import '../../../../user_favorites/db/adapters/user_favs_db.dart';
 import '../../../../user_favorites/db/constants/db_constants.dart';
@@ -17,12 +18,15 @@ part 'people_list_cubit.freezed.dart';
 class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
   PeopleListCubit({
     required StarWarsRepository starWarsRepo,
+    required PeopleListRouter router,
   })  : _starWarsRepo = starWarsRepo,
+        _router = router,
         super(PeopleListState()) {
     _init();
   }
 
   final StarWarsRepository _starWarsRepo;
+  final PeopleListRouter _router;
 
   late Box<UserFav> _dbBox;
   final List<String> _favsList = List.empty(growable: true);
@@ -81,6 +85,25 @@ class PeopleListCubit extends Cubit<PeopleListState> with DisposableCubit {
   void fetchMoreData() {
     emit(state.copyWith(isBottomLoading: true));
     getPeople();
+  }
+
+  void navigateToDetail(StarWarsFavCharacter item) {
+    _router.navigateToDetail(item).then((result) {
+      if (result == null) {
+        return;
+      }
+      final String url = result.url;
+      final bool isInFavsList = _favsList.any((element) => element == url);
+
+      if (isInFavsList && !result.isFavorite) {
+        onRemoveFavorite(url);
+        return;
+      }
+      if (!isInFavsList && result.isFavorite) {
+        onAddFavorite(url);
+        return;
+      }
+    });
   }
 
   void onAddFavorite(String url) {
